@@ -32,7 +32,7 @@ public class PlayerGrab : MonoBehaviour {
 		Debug.Log("Grabbed");
 		rb.velocity = new Vector3(0, 0, 0);
 		rb.useGravity = false;
-		rb.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+		rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
 	}
 	
 	void UngrabLedge() {
