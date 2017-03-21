@@ -29,12 +29,18 @@ public class PlayerMovement : MonoBehaviour {
         transform.Rotate(0, x, 0);
         transform.Translate(0, 0, z);
     }
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision col)
     {
-        isGrounded = true;
+        if (col.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
     }
-    void OnCollisionExit()
+    void OnCollisionExit(Collision col)
     {
-        isGrounded = false;
+        if (col.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
     }
 }

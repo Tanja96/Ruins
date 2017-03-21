@@ -22,15 +22,19 @@ public class PlayerJump : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            rb.AddForce(jump * jumpSpeed, ForceMode.Impulse);
+            //rb.AddForce(jump * jumpSpeed, ForceMode.Impulse);
+            rb.velocity += jumpSpeed * Vector3.up;
             isGrounded = false;
         }
     }
 
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision col)
     {
-        isGrounded = true;
+        if(col.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
     }
 }
