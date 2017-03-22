@@ -8,8 +8,9 @@ public class PlayerMovement : MonoBehaviour {
     private bool isGrounded;
 
     public Rigidbody rb;
-    public float walkSpeed;
-    public float runSpeed;
+    public float walkSpeed = 5f;
+    public float runSpeed = 9f;
+    public float airSpeed = 3f;
 
 
 	// Use this for initialization
@@ -30,6 +31,13 @@ public class PlayerMovement : MonoBehaviour {
 
             transform.Rotate(0, x, 0);
             transform.Translate(0, 0, z);
+        }else
+        {
+            speed = airSpeed;
+            var x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+
+            transform.Translate(x, 0, z);
         }
         
     }

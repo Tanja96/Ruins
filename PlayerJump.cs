@@ -23,7 +23,7 @@ public class PlayerJump : MonoBehaviour {
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             float forwardDirection = Input.GetAxis("Vertical");
-            if (Input.GetKey("left shift") && Input.GetAxis("Vertical") >= 0)
+            if (Input.GetKey("left shift") && Input.GetAxis("Vertical") > 0)
             {
                 jumpVerticalSpeed = 10.0f;
             }
@@ -42,6 +42,14 @@ public class PlayerJump : MonoBehaviour {
         if(col.gameObject.tag == "Ground")
         {
             isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit(Collision col)
+    {
+        if (col.gameObject.tag == "Ground")
+        {
+            isGrounded = false;
         }
     }
 }
