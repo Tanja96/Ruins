@@ -70,6 +70,9 @@ public class PlayerGrab : MonoBehaviour {
 		float ledgeHeight = ledge.position.y + (ledge.localScale.y / 2);
 		float distToLedge = playerHeight - ledgeHeight;
 		transform.Translate(0, -distToLedge, 0);
+		Vector3 euler = ledge.rotation.eulerAngles;  
+        Quaternion rot = Quaternion.Euler(0, euler.y, 0);
+        transform.rotation = rot;
 		
 		rb.velocity = new Vector3(0, 0, 0);
 		rb.useGravity = false;
