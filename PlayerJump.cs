@@ -23,7 +23,7 @@ public class PlayerJump : MonoBehaviour {
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             float forwardDirection = Input.GetAxis("Vertical");
-            if (Input.GetKey("left shift"))
+            if (Input.GetKey("left shift") && Input.GetAxis("Vertical") >= 0)
             {
                 jumpVerticalSpeed = 10.0f;
             }
