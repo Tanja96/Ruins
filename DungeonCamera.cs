@@ -5,7 +5,7 @@ using UnityEngine;
 public class DungeonCamera : MonoBehaviour {
 
     public GameObject target;
-    public float rotateSpeed = 9.0f;
+    public float rotateSpeed = 5.0f;
     public float damping = 0.2f;
     Vector3 offset;
      
