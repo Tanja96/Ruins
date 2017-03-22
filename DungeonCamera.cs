@@ -6,7 +6,7 @@ public class DungeonCamera : MonoBehaviour {
 
     public GameObject target;
     public float rotateSpeed = 5.0f;
-    public float damping = 0.2f;
+    public float damping = 0.9f;
     Vector3 offset;
      
     void Start() {
@@ -15,8 +15,9 @@ public class DungeonCamera : MonoBehaviour {
      
     void LateUpdate() {
         if (Input.GetAxis("Vertical") == 0) {
-            float horizontal = Input.GetAxis("Horizontal") * rotateSpeed;
-            transform.Rotate(0, horizontal, 0);
+            float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+			float vertical = -Input.GetAxis("Mouse Y") * rotateSpeed;
+            transform.Rotate(vertical, horizontal, 0);
         } else {
             float currentAngle = transform.eulerAngles.y;
 			float desiredAngle = target.transform.eulerAngles.y;
