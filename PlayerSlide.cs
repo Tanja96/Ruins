@@ -11,6 +11,7 @@ public class PlayerSlide : MonoBehaviour {
 	public Rigidbody rb;
 
 	private bool sliding = false;
+	private bool isGrounded;
 	
 	// Update is called once per frame
 	void Update () {
@@ -19,7 +20,7 @@ public class PlayerSlide : MonoBehaviour {
 			//transform.Translate(0, 0, slideSpeed);
 		}
 		
-		if (Input.GetKeyDown("left ctrl")) {
+		if (Input.GetKeyDown("left ctrl") && isGrounded) {
 			if (!sliding) {
 				rb.velocity += jumpHeight * Vector3.up;
 				rb.velocity += forwardJumpSpeed * transform.forward;
@@ -34,6 +35,18 @@ public class PlayerSlide : MonoBehaviour {
 				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 3, transform.localScale.z);
 				sliding = false;
 			}
+		}
+	}
+	
+	void OnCollisionEnter(Collision col) {
+		if (col.gameObject.tag == "Ground") {
+			isGrounded = true;
+		}
+	}
+	
+	void OnCollisionExit(Collision col) {
+		if (col.gameObject.tag == "Ground") {
+			isGrounded = false;
 		}
 	}
 }
