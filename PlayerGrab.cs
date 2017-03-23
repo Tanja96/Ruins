@@ -36,6 +36,10 @@ public class PlayerGrab : MonoBehaviour {
 					rb.velocity += hangJumpHorizontalSpeed * transform.right;
 				}
 			}
+			var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3f;
+            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3f;
+
+            transform.Translate(-x, 0, -z);
 		}
 	}
 	
@@ -76,7 +80,7 @@ public class PlayerGrab : MonoBehaviour {
 		
 		rb.velocity = new Vector3(0, 0, 0);
 		rb.useGravity = false;
-		rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+		rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
 		hanging = true;
 	}
 	
