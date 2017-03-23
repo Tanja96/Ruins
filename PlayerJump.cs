@@ -45,6 +45,14 @@ public class PlayerJump : MonoBehaviour {
         }
     }
 
+    void OnCollisionStay(Collision col)
+    {
+        if(col.gameObject.tag == "Ground")
+        {
+            isGrounded = true;
+        }
+    }
+
     void OnCollisionExit(Collision col)
     {
         if (col.gameObject.tag == "Ground")
