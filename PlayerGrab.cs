@@ -63,6 +63,7 @@ public class PlayerGrab : MonoBehaviour {
 			if (!Input.GetKey("mouse 0")) {
 				UngrabLedge();
 			} else if (col != lastCollider && transform.position.y < col.transform.position.y) {
+				lastCollider = col;
 				GrabLedge(col.transform);
 			}
 		}
