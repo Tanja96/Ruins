@@ -4,20 +4,29 @@ using UnityEngine;
 
 public class PlayerLedgeClimb : MonoBehaviour {
 
-    public Rigidbody rb;
+    private Rigidbody rb;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
     }
 	
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.CompareTag("Edge"))
-        {
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Edge") && CheckHeight(other.transform)) {
             rb.velocity = new Vector3(0, 0, 0);
             transform.Translate(0, 0.8f, 0.4f);
-
         }
     }
+	
+	// Tarkistaa pelaajan "jalkojen" korkeuden.
+	bool CheckHeight(Transform other) {
+		float playerHeight = transform.localScale.y;
+		float edgeHeight = other.localScale.y;
+		if (transform.position.y - (playerHeight / 2) < other.position.y + (edgeHeight / 2)) {
+			if (transform.position.y > other.position.y) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
