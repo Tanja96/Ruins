@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerGrab : MonoBehaviour {
 
-	public Rigidbody rb;
-	public float hangJumpSpeed = 8.0f;
+	public float hangJumpSpeed = 10.0f;
 	public float hangJumpVerticalSpeed = 5.0f;
 	public float hangJumpHorizontalSpeed = 4.0f;
 	
+	private Rigidbody rb;
+	private Collider lastCollider;
 	private bool hanging = false;
+	
+	void Start () {
+        rb = GetComponent<Rigidbody>();
+		lastCollider = null;
+    }
 	
 	void Update() {
 		if (hanging) {
@@ -43,23 +49,26 @@ public class PlayerGrab : MonoBehaviour {
 		}
 	}
 	
-	void OnCollisionEnter(Collision col) {
+	void OnTriggerEnter(Collider col) {
 		if (col.gameObject.tag == "Ledge") {
-			if (Input.GetKey("mouse 0")) {
+			if (Input.GetKey("mouse 0") && transform.position.y < col.transform.position.y) {
+				lastCollider = col;
 				GrabLedge(col.transform);
 			}
 		}
 	}
 	
-	void OnCollisionStay(Collision col) {
+	void OnTriggerStay(Collider col) {
 		if (col.gameObject.tag == "Ledge") {
 			if (!Input.GetKey("mouse 0")) {
 				UngrabLedge();
+			} else if (col != lastCollider && transform.position.y < col.transform.position.y) {
+				GrabLedge(col.transform);
 			}
 		}
 	}
 	
-	void OnCollisionExit(Collision col) {
+	void OnTriggerExit(Collider col) {
 		if (col.gameObject.tag == "Ledge") {
 			UngrabLedge();
 		}
@@ -74,9 +83,6 @@ public class PlayerGrab : MonoBehaviour {
 		float ledgeHeight = ledge.position.y + (ledge.localScale.y / 2);
 		float distToLedge = playerHeight - ledgeHeight;
 		transform.Translate(0, -distToLedge, 0);
-		Vector3 euler = ledge.rotation.eulerAngles;  
-        Quaternion rot = Quaternion.Euler(0, euler.y, 0);
-        transform.rotation = rot;
 		
 		rb.velocity = new Vector3(0, 0, 0);
 		rb.useGravity = false;
