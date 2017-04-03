@@ -18,9 +18,9 @@ public class PlayerJump : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && Time.timeScale == 1)
         {
             float forwardDirection = Input.GetAxis("Vertical");
             if (Input.GetKey("left shift") && Input.GetAxis("Vertical") > 0)
