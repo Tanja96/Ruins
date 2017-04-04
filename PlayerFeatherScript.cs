@@ -12,15 +12,10 @@ public class PlayerFeatherScript : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
-	void OnCollisionEnter(Collision col) {
-		if (col.gameObject.tag == "Feather") {
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag == "Feather") {
 			featherCount++;
-			Destroy(col.gameObject);
+			Destroy(other.gameObject);
 		}
 	}
 	
