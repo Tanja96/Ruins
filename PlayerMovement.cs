@@ -34,10 +34,11 @@ public class PlayerMovement : MonoBehaviour {
         }else
         {
             speed = airSpeed;
-            var x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
             var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 
-            transform.Translate(x, 0, z);
+            transform.Rotate(0, x, 0);
+            transform.Translate(0, 0, z);
         }
         
     }
