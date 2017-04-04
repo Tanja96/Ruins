@@ -20,7 +20,7 @@ public class PlayerLedgeClimb : MonoBehaviour {
 	
 	// Tarkistaa pelaajan "jalkojen" korkeuden.
 	bool CheckHeight(Transform other) {
-		float playerHeight = transform.localScale.y;
+		float playerHeight = transform.localScale.y / 5;
 		float edgeHeight = other.localScale.y;
 		if (transform.position.y - (playerHeight / 2) < other.position.y + (edgeHeight / 2)) {
 			if (transform.position.y > other.position.y) {
