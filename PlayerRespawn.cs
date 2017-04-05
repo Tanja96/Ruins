@@ -12,10 +12,14 @@ public class PlayerRespawn : MonoBehaviour {
         rb = GetComponent<Rigidbody>();	
 	}
 
-    void OnCollisionExit(Collision col) {
+    void OnCollisionStay(Collision col) {
         if (col.gameObject.tag == "Ground") {
-            lastPosition = transform.position;
-        }
+			foreach (ContactPoint contact in col.contacts) {
+				if (contact.point.y <= (transform.position.y - 1.2f)) {
+					lastPosition = transform.position;
+				}
+			}
+		}
     }
 
     void OnTriggerEnter(Collider other) {
