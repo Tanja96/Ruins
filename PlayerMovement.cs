@@ -42,25 +42,18 @@ public class PlayerMovement : MonoBehaviour {
         }
         
     }
-    void OnCollisionEnter(Collision col)
-    {
-        if (col.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-        }
+	
+    void OnCollisionStay(Collision col) {
+		foreach (ContactPoint contact in col.contacts) {
+			if (contact.point.y <= (transform.position.y - 1.2f)) {
+				isGrounded = true;
+			} else {
+				isGrounded = false;
+			}
+		}
     }
-    void OnCollisionStay(Collision col)
-    {
-        if (col.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-        }
-    }
-    void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.tag == "Ground")
-        {
-            isGrounded = false;
-        }
-    }
+	
+	void OnCollisionExit(Collision col) {
+		isGrounded = false;
+	}
 }
