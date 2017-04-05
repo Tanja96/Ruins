@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerGrab : MonoBehaviour {
 
 	public float hangJumpSpeed = 10.0f;
-	public float hangJumpVerticalSpeed = 5.0f;
+	public float hangJumpVerticalSpeed = 3.0f;
 	public float hangJumpHorizontalSpeed = 4.0f;
 	
 	private Rigidbody rb;
@@ -80,7 +80,7 @@ public class PlayerGrab : MonoBehaviour {
 		Debug.Log("Grabbed");
 		
 		//Move character's hands to same height as the ledge.
-		float playerHeight = transform.position.y + (transform.localScale.y / 2);
+		float playerHeight = transform.position.y + (transform.localScale.y / 10);
 		float ledgeHeight = ledge.position.y + (ledge.localScale.y / 2);
 		float distToLedge = playerHeight - ledgeHeight;
 		transform.Translate(0, -distToLedge, 0);
