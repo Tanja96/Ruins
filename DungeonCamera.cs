@@ -3,11 +3,11 @@ using System.Collections;
 
 public class DungeonCamera : MonoBehaviour {
 
+    private Vector3 offset;
+
     public GameObject player;
 	public float rotateSpeed = 5f;
-	
-    private Vector3 offset;
- 
+
     void Start() {
         offset = player.transform.position - transform.position;
     }

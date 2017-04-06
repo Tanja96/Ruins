@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGrab : MonoBehaviour {
-
-	public float hangJumpSpeed = 10.0f;
-	public float hangJumpVerticalSpeed = 3.0f;
-	public float hangJumpHorizontalSpeed = 4.0f;
 	
 	private Rigidbody rb;
 	private Collider lastCollider;
-	private bool hanging = false;
+	private bool hanging;
+    
+    public float hangJumpSpeed = 10.0f;
+	public float hangJumpVerticalSpeed = 3.0f;
+	public float hangJumpHorizontalSpeed = 4.0f;
 	
-	void Start () {
+	void Start() {
         rb = GetComponent<Rigidbody>();
 		lastCollider = null;
+        hanging = false;
     }
 	
 	void Update() {
@@ -22,8 +23,7 @@ public class PlayerGrab : MonoBehaviour {
 			if (!Input.GetKey("mouse 0")) {
 				UngrabLedge();
 			}
-			if (Input.GetButtonDown("Jump")) {
-				
+			if (Input.GetButtonDown("Jump")) {			
 				if (Input.GetAxis("Vertical") < 0) {
 					UngrabLedge();
 					rb.velocity += hangJumpSpeed * Vector3.up;
@@ -75,10 +75,7 @@ public class PlayerGrab : MonoBehaviour {
 		}
 	}
 	
-	void GrabLedge(Transform ledge) {
-		
-		Debug.Log("Grabbed");
-		
+	void GrabLedge(Transform ledge) {	
 		//Move character's hands to same height as the ledge.
 		float playerHeight = transform.position.y + (transform.localScale.y / 10);
 		float ledgeHeight = ledge.position.y + (ledge.localScale.y / 2);
@@ -92,7 +89,6 @@ public class PlayerGrab : MonoBehaviour {
 	}
 	
 	void UngrabLedge() {
-		Debug.Log("Ungrabbed");
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 		rb.useGravity = true;
 		hanging = false;

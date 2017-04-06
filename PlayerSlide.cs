@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerSlide : MonoBehaviour {
 
+    private Rigidbody rb;
+	private bool sliding;
+	private bool isGrounded;
+
 	public float slideSpeed = 6.0f;
 	public float forwardJumpSpeed = 6.0f;
 	public float jumpHeight = 2.0f;
 	
-	public Rigidbody rb;
-
-	private bool sliding = false;
-	private bool isGrounded;
-	
-	// Update is called once per frame
-	void Update () {
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+        sliding = false;
+    }
+    
+	void Update() {
 		
 		if (sliding) {
 			//transform.Translate(0, 0, slideSpeed);
@@ -24,8 +27,7 @@ public class PlayerSlide : MonoBehaviour {
 			if (!sliding) {
 				rb.velocity += jumpHeight * Vector3.up;
 				rb.velocity += forwardJumpSpeed * transform.forward;
-				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 3, transform.localScale.z);
-				
+				transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 3, transform.localScale.z);			
 				sliding = true;
 			}
 		}
@@ -38,21 +40,17 @@ public class PlayerSlide : MonoBehaviour {
 		}
 	}
 	
-	void OnCollisionEnter(Collision col) {
-		if (col.gameObject.tag == "Ground") {
-			isGrounded = true;
-		}
-	}
-	
 	void OnCollisionStay(Collision col) {
-		if (col.gameObject.tag == "Ground") {
-			isGrounded = true;
-		}
-	}
+	    foreach (ContactPoint contact in col.contacts) {
+		    if (contact.point.y <= (transform.position.y - 1.2f)) {
+			    isGrounded = true;
+			} else {
+			    isGrounded = false;
+		    }
+	    }
+    }
 	
 	void OnCollisionExit(Collision col) {
-		if (col.gameObject.tag == "Ground") {
-			isGrounded = false;
-		}
+		isGrounded = false;
 	}
 }

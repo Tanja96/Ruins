@@ -6,24 +6,20 @@ public class PlayerMovement : MonoBehaviour {
 
     private float speed;
     private bool isGrounded;
-
-    public Rigidbody rb;
+    private Rigidbody rb;
+    
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
     public float airSpeed = 3f;
-
-
-	// Use this for initialization
-	void Start () {
-	}
 	
-	// Update is called once per frame
-	void Update () {
-        if (isGrounded)
-        {
+	void Start() {
+        rb = GetComponent<Rigidbody>();
+    }
+    
+	void Update() {
+        if (isGrounded) {
             speed = walkSpeed;
-            if (Input.GetKey("left shift") && isGrounded && Input.GetAxis("Vertical") >= 0)
-            {
+            if (Input.GetKey("left shift") && isGrounded && Input.GetAxis("Vertical") >= 0) {
                 speed = runSpeed;
             }
             var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
@@ -31,26 +27,24 @@ public class PlayerMovement : MonoBehaviour {
 
             transform.Rotate(0, x, 0);
             transform.Translate(0, 0, z);
-        }else
-        {
+        } else {
             speed = airSpeed;
             var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
             var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 
             transform.Rotate(0, x, 0);
             transform.Translate(0, 0, z);
-        }
-        
+        } 
     }
 	
     void OnCollisionStay(Collision col) {
-		foreach (ContactPoint contact in col.contacts) {
-			if (contact.point.y <= (transform.position.y - 1.2f)) {
-				isGrounded = true;
+	    foreach (ContactPoint contact in col.contacts) {
+		    if (contact.point.y <= (transform.position.y - 1.2f)) {
+			    isGrounded = true;
 			} else {
-				isGrounded = false;
-			}
-		}
+			    isGrounded = false;
+		    }
+	    }
     }
 	
 	void OnCollisionExit(Collision col) {

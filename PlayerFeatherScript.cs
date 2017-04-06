@@ -5,11 +5,8 @@ public class PlayerFeatherScript : MonoBehaviour {
 
 	public int featherCount;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Start() {
 		featherCount = 0;
-	
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -18,5 +15,4 @@ public class PlayerFeatherScript : MonoBehaviour {
 			Destroy(other.gameObject);
 		}
 	}
-	
 }
