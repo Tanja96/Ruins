@@ -12,7 +12,7 @@ public class PlayerJump : MonoBehaviour {
 
     void Start() {
         rb = GetComponent<Rigidbody>();
-		jumpVerticalSpeed = 5f;
+	jumpVerticalSpeed = 5f;
     }
 
     void Update() {
@@ -30,16 +30,16 @@ public class PlayerJump : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision col) {
-		foreach (ContactPoint contact in col.contacts) {
-			if (contact.point.y <= (transform.position.y - 1.2f)) {
-				isGrounded = true;
-			} else {
-				isGrounded = false;
-			}
-		}
+	foreach (ContactPoint contact in col.contacts) {
+	    if (contact.point.y <= (transform.position.y - 1.2f)) {
+	        isGrounded = true;
+	    } else {
+		isGrounded = false;
+	    }
+	}
     }
 	
-	void OnCollisionExit(Collision col) {
-		isGrounded = false;
-	}
+    void OnCollisionExit(Collision col) {
+	isGrounded = false;
+    }
 }
