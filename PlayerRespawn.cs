@@ -12,10 +12,20 @@ public class PlayerRespawn : MonoBehaviour {
         rb = GetComponent<Rigidbody>();	
 	}
 
+	void OnCollisionEnter(Collision col) {
+		foreach (ContactPoint contact in col.contacts) {
+				if (contact.point.y <= transform.position.y) {
+					if (col.relativeVelocity.magnitude > 15) {
+						Respawn(lastPosition);
+					}
+				}
+			}
+	}
+	
     void OnCollisionStay(Collision col) {
         if (col.gameObject.tag == "Ground") {
 			foreach (ContactPoint contact in col.contacts) {
-				if (contact.point.y <= (transform.position.y - 1.2f)) {
+				if (contact.point.y <= transform.position.y) {
 					lastPosition = transform.position;
 				}
 			}
@@ -24,8 +34,12 @@ public class PlayerRespawn : MonoBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.tag == "Death") {
-            rb.velocity = new Vector3(0, 0, 0);
-            transform.position = lastPosition;
+            Respawn(lastPosition);
         }
     }
+	
+	void Respawn(Vector3 spawnPoint){
+		rb.velocity = new Vector3(0, 0, 0);
+		transform.position = spawnPoint;
+	}
 }
