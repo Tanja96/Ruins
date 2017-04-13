@@ -13,7 +13,7 @@ public class DungeonCamera : MonoBehaviour {
     void Start() {
         offset = player.transform.position - transform.position;
         def_offset = offset;
-        zoom_offset = offset - new Vector3(0, offset.y + 0.6f, offset.z);
+        zoom_offset = offset - new Vector3(0, offset.y + 2f, offset.z);
     }
 	
 	void LateUpdate() {
@@ -32,7 +32,7 @@ public class DungeonCamera : MonoBehaviour {
 			transform.RotateAround(player.transform.position, Vector3.up, horizontal);
 			transform.RotateAround(player.transform.position, transform.right, vertical);
 		} else {
-			transform.LookAt(player.transform);
+			transform.LookAt(player.transform.GetChild(0).transform);
             offset = def_offset;
 		}
         

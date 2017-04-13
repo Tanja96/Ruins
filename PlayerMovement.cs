@@ -11,12 +11,18 @@ public class PlayerMovement : MonoBehaviour {
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
     public float airSpeed = 3f;
+    public Animator animator;
 	
 	void Start() {
         rb = GetComponent<Rigidbody>();
     }
     
 	void Update() {
+        if (Input.GetAxis("Vertical") != 0) {
+            animator.SetBool("walk", true);
+        } else {
+            animator.SetBool("walk", false);
+        }
         if (isGrounded) {
             speed = walkSpeed;
             if (Input.GetKey("left shift") && isGrounded && Input.GetAxis("Vertical") >= 0) {
@@ -39,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
 	
     void OnCollisionStay(Collision col) {
 	    foreach (ContactPoint contact in col.contacts) {
-		    if (contact.point.y <= (transform.position.y - 1.2f)) {
+		    if (contact.point.y <= (transform.position.y + 0.2f)) {
 			    isGrounded = true;
 			} else {
 			    isGrounded = false;

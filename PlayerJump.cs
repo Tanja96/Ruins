@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour {
 
-    private bool isGrounded;
     private Rigidbody rb;
+    private bool isGrounded;
 	
     public float jumpSpeed;
     public float jumpVerticalSpeed;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
-	jumpVerticalSpeed = 5f;
+	    jumpVerticalSpeed = 5f;
     }
 
     void Update() {
@@ -30,16 +30,16 @@ public class PlayerJump : MonoBehaviour {
     }
 
     void OnCollisionStay(Collision col) {
-	foreach (ContactPoint contact in col.contacts) {
-	    if (contact.point.y <= (transform.position.y - 1.2f)) {
-	        isGrounded = true;
-	    } else {
-		isGrounded = false;
-	    }
-	}
+        foreach (ContactPoint contact in col.contacts) {
+            if (contact.point.y <= (transform.position.y + 0.2f)) {
+                isGrounded = true;
+            } else {
+                isGrounded = false;
+            }
+        }
     }
 	
     void OnCollisionExit(Collision col) {
-	isGrounded = false;
+        isGrounded = false;
     }
 }
