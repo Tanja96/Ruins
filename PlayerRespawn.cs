@@ -15,7 +15,7 @@ public class PlayerRespawn : MonoBehaviour {
 	void OnCollisionEnter(Collision col) {
 		foreach (ContactPoint contact in col.contacts) {
 				if (contact.point.y <= transform.position.y) {
-					if (col.relativeVelocity.magnitude > 15) {
+					if (col.relativeVelocity.y > 15) {
 						Respawn(lastPosition);
 					}
 				}
