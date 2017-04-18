@@ -19,27 +19,33 @@ public class PlayerMovement : MonoBehaviour {
     
 	void Update() {
         if (Input.GetAxis("Vertical") != 0) {
-            animator.SetBool("walk", true);
+            animator.SetBool("Run", true);
         } else {
-            animator.SetBool("walk", false);
+            animator.SetBool("Run", false);
         }
         if (isGrounded) {
             speed = walkSpeed;
             if (Input.GetKey("left shift") && isGrounded && Input.GetAxis("Vertical") >= 0) {
                 speed = runSpeed;
+                animator.SetBool("FastRun", true);
+            }
+            else
+            {
+                animator.SetBool("FastRun", false);
             }
             var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
-            var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+            var z = Input.GetAxis("Vertical") * speed;
 
             transform.Rotate(0, x, 0);
-            transform.Translate(0, 0, z);
+			//rb.MovePosition(transform.position + transform.forward * z);
+			rb.velocity = transform.forward * z;
         } else {
             speed = airSpeed;
             var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
             var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 
             transform.Rotate(0, x, 0);
-            transform.Translate(0, 0, z);
+			rb.MovePosition(transform.position + transform.forward * z);
         } 
     }
 	
