@@ -4,62 +4,63 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    private float speed;
-    private bool isGrounded;
-    private Rigidbody rb;
     
+    private float speed;
+	private float rotation;
+    private CharacterController controller;
+	
+	public Vector3 moveDirection = Vector3.zero;   
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
     public float airSpeed = 3f;
+	public float gravity = 15f;
+	public float jumpSpeed = 10f;
+    public float wallJumpSpeedUp = 10f;
+    public float wallJumpSpeedForward = 5f;
     public Animator animator;
 	
 	void Start() {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
     
 	void Update() {
+		Debug.Log(controller.velocity.y);
         if (Input.GetAxis("Vertical") != 0) {
             animator.SetBool("Run", true);
         } else {
             animator.SetBool("Run", false);
         }
-        if (isGrounded) {
-            speed = walkSpeed;
-            if (Input.GetKey("left shift") && isGrounded && Input.GetAxis("Vertical") >= 0) {
-                speed = runSpeed;
-                animator.SetBool("FastRun", true);
-            }
-            else
-            {
-                animator.SetBool("FastRun", false);
-            }
-            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
-            var z = Input.GetAxis("Vertical") * speed;
-
-            transform.Rotate(0, x, 0);
-			//rb.MovePosition(transform.position + transform.forward * z);
-			rb.velocity = transform.forward * z;
-        } else {
-            speed = airSpeed;
-            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 100f;
-            var z = Input.GetAxis("Vertical") * Time.deltaTime * speed;
-
-            transform.Rotate(0, x, 0);
-			rb.MovePosition(transform.position + transform.forward * z);
-        } 
-    }
-	
-    void OnCollisionStay(Collision col) {
-	    foreach (ContactPoint contact in col.contacts) {
-		    if (contact.point.y <= (transform.position.y + 0.2f)) {
-			    isGrounded = true;
+		if (controller.isGrounded) {
+			speed = walkSpeed;
+			if (Input.GetKey("left shift") && Input.GetAxis("Vertical") >= 0) {
+				speed = runSpeed;
+				animator.SetBool("FastRun", true);
 			} else {
-			    isGrounded = false;
-		    }
-	    }
+				animator.SetBool("FastRun", false);
+			}
+			moveDirection = new Vector3(0, 0, Input.GetAxis("Vertical"));
+			moveDirection = transform.TransformDirection(moveDirection);
+			moveDirection *= speed;
+			if (Input.GetButton("Jump")) {
+				moveDirection.y = jumpSpeed;
+			}
+		} else {
+			transform.Translate(0, 0, Input.GetAxis("Vertical") * Time.deltaTime * airSpeed);
+		}
+			
+        moveDirection.y -= gravity * Time.deltaTime;
+        controller.Move(moveDirection * Time.deltaTime);
+		rotation = Input.GetAxis("Horizontal") * 2;
+		transform.Rotate(0, rotation, 0);
     }
-	
-	void OnCollisionExit(Collision col) {
-		isGrounded = false;
-	}
+
+    private void OnControllerColliderHit(ControllerColliderHit col) {
+        if (!controller.isGrounded && col.normal.y < 0.3f && Input.GetButton("Jump")) {
+            Debug.DrawRay(col.point, col.normal, Color.white, 1.25f);
+            transform.rotation = Quaternion.LookRotation(-col.normal);
+            transform.Rotate(0, 180, 0);
+            moveDirection = col.normal * wallJumpSpeedForward;
+            moveDirection.y = wallJumpSpeedUp;
+        }
+    }
 }
