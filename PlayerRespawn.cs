@@ -5,41 +5,28 @@ using UnityEngine;
 public class PlayerRespawn : MonoBehaviour {
 
     private Vector3 lastPosition;
-    private Rigidbody rb;
+    private CharacterController controller;
 
 	void Start () {
         lastPosition = transform.position;
-        rb = GetComponent<Rigidbody>();	
+        controller = GetComponent<CharacterController>();	
 	}
 
-	void OnCollisionEnter(Collision col) {
-		foreach (ContactPoint contact in col.contacts) {
-				if (contact.point.y <= transform.position.y) {
-					if (col.relativeVelocity.y > 15) {
-						Respawn(lastPosition);
-					}
-				}
-			}
+	void OnControllerColliderHit(ControllerColliderHit hit) {
+		if (controller.velocity.y <= -15) {
+			Respawn(lastPosition);
+		} else if (hit.collider.gameObject.tag == "Ground") {
+			lastPosition = transform.position;
+		}
 	}
 	
-    void OnCollisionStay(Collision col) {
-        if (col.gameObject.tag == "Ground") {
-			foreach (ContactPoint contact in col.contacts) {
-				if (contact.point.y <= transform.position.y) {
-					lastPosition = transform.position;
-				}
-			}
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag == "Death") {
+			Respawn(lastPosition);
 		}
-    }
-
-    void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "Death") {
-            Respawn(lastPosition);
-        }
-    }
+	}
 	
 	void Respawn(Vector3 spawnPoint){
-		rb.velocity = new Vector3(0, 0, 0);
 		transform.position = spawnPoint;
 	}
 }

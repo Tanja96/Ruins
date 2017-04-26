@@ -8,7 +8,7 @@ public class SinkingScript : MonoBehaviour {
 
     private Vector3 originalPos;
     private bool sinking;
-    private GameObject player;
+    private Transform player;
 
 	// Use this for initialization
 	void Start() {
@@ -25,25 +25,23 @@ public class SinkingScript : MonoBehaviour {
             }
         } else {
             transform.Translate(0, -sinkingSpeed * Time.deltaTime, 0);
-            player.transform.Translate(0, -sinkingSpeed * Time.deltaTime, 0);
+            player.Translate(0, -sinkingSpeed * Time.deltaTime, 0);
             CheckUnderWater();
         }
 	}
     
-    void OnCollisionEnter(Collision col) {
-        if (col.gameObject.tag == "Player") {
-            if (!sinking) {
-                player = col.gameObject;
-                sinking = true;
-            }
-        }
+    void OnTriggerEnter(Collider col) {
+		if (col.gameObject.tag == "Player") {
+			if (!sinking) {
+				player = col.gameObject.transform;
+				sinking = true;
+			}
+		}
     }
     
-    void OnCollisionExit(Collision col) {
-        if (col.gameObject.tag == "Player") {
-            sinking = false;
-            player = null;
-        }
+    void OnTriggerExit(Collider col) {
+		sinking = false;
+		player = null;
     }
     
     void CheckUnderWater() {

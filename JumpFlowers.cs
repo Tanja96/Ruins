@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class JumpFlowers : MonoBehaviour {
 
-    private Rigidbody rb;
+	private PlayerMovement movement;
+	private CharacterController controller;
     
     public float flowerJumpSpeed = 9f;
     public float flowerBoostJumpSpeed = 11f;
 	
     void Start () {
-        rb = GetComponent<Rigidbody>();
+		controller = GetComponent<CharacterController>();
+		movement = GetComponent<PlayerMovement>();
     }
 
     void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("JFlower") && Input.GetButton("Jump")) {
-            rb.velocity = new Vector3(0, flowerBoostJumpSpeed, 0);
+			controller.Move(new Vector3(0, 0.1f, 0));
+            movement.moveDirection.y = flowerBoostJumpSpeed;
+			movement.moveDirection.x = 0;
+			movement.moveDirection.z = 0;
         } else if (other.gameObject.CompareTag("JFlower")) {
-            rb.velocity = new Vector3(0, flowerJumpSpeed, 0);
+			controller.Move(new Vector3(0, 0.1f, 0));
+            movement.moveDirection.y = flowerJumpSpeed;
+			movement.moveDirection.x = 0;
+			movement.moveDirection.z = 0;
         }   
     }
 }
