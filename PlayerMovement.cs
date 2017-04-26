@@ -12,9 +12,9 @@ public class PlayerMovement : MonoBehaviour {
 	public Vector3 moveDirection = Vector3.zero;   
     public float walkSpeed = 5f;
     public float runSpeed = 9f;
-    public float airSpeed = 3f;
+    public float airSpeed = 10f;
 	public float gravity = 15f;
-	public float jumpSpeed = 10f;
+	public float jumpSpeed = 7f;
     public float wallJumpSpeedUp = 10f;
     public float wallJumpSpeedForward = 5f;
     public Animator animator;
@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
 				moveDirection.y = jumpSpeed;
 			}
 		} else {
-			transform.Translate(0, 0, Input.GetAxis("Vertical") * Time.deltaTime * airSpeed);
+			moveDirection += Input.GetAxis("Vertical") * airSpeed * transform.forward * Time.deltaTime;
 		}
 			
         moveDirection.y -= gravity * Time.deltaTime;
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnControllerColliderHit(ControllerColliderHit col) {
-        if (!controller.isGrounded && col.normal.y < 0.3f && Input.GetButton("Jump")) {
+        if (!controller.isGrounded && col.normal.y < 0.05f && Input.GetButton("Jump")) {
             Debug.DrawRay(col.point, col.normal, Color.white, 1.25f);
             transform.rotation = Quaternion.LookRotation(-col.normal);
             transform.Rotate(0, 180, 0);
