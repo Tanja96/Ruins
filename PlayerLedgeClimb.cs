@@ -4,30 +4,53 @@ using UnityEngine;
 
 public class PlayerLedgeClimb : MonoBehaviour {
 
-    private Rigidbody rb;
+    private CharacterController controller;
+    private bool beenHit = false;
+    private float startTime;
+    private float journeyLength;
+
+    public Vector3 startPos;
+    public Vector3 endPos;
+    public float speed = 1.5f;
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
+        //startTime = Time.time;
     }
-	
-    void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Edge") && CheckHeight(other.transform)) {
-            rb.velocity = new Vector3(0, 0, 0);
-            transform.Translate(0, 0.8f, 0.4f);
+
+    void Update() {
+        if (beenHit) {
+            float distCovered = (Time.time - startTime) * speed;
+            float fracJourney = distCovered / journeyLength;
+            transform.position = Vector3.Lerp(startPos, endPos, fracJourney);
+            if (transform.position == endPos)
+                beenHit = false;
         }
     }
-	
-	// Tarkistaa pelaajan "jalkojen" korkeuden.
-	bool CheckHeight(Transform other) {
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("Edge") && CheckHeight(other.transform)) {
+            startTime = Time.time;
+            startPos = transform.position;
+            endPos = startPos + new Vector3(0, 1.5f, 2f);
+            journeyLength = Vector3.Distance(startPos, endPos);
+            //Vector3 playerVelocity = controller.velocity;
+            //playerVelocity = new Vector3(0, 0, 0);
+            beenHit = true;
+        }
+    }
+
+    // Tarkistaa pelaajan "jalkojen" korkeuden.
+    bool CheckHeight(Transform other) {
 		float playerFeetHeight = transform.position.y;
 		float playerNavelHeight = transform.position.y + 1;
 		float edgeHeight = other.localScale.y;
 		if (playerFeetHeight < other.position.y + (edgeHeight / 2)) {
 			if (playerNavelHeight > other.position.y + (edgeHeight / 2)) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }
